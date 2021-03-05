@@ -19,6 +19,19 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 connect_db(app)
 
+def do_login(user):
+    """Log in user."""
+
+    session[CURR_USER_KEY] = user.username
+
+
+def do_logout():
+    """Logout user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
+
 @app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
@@ -43,9 +56,47 @@ def signup():
         flash("You are already logged in!", category="warning")
         return redirect('/')
     form = UserForm()
-    if form.authenticate_on_submit():
-        
+    if form.validate_on_submit():
+        if User.query.filter_by(username=form.username.data).first():
+            flash("Username must be unique!", category="danger")
+            return redirect('/signup')
+        u = User.create(username=form.username.data, password=form.password.data)
+        try:
+            db.session.add(u)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            flash("Error Contacting Database", category='warning')
+            return redirect('/')
+        do_login(u)
+        flash("Account Successfully Created", category='success')
+        return redirect('/')
+    return render_template('/users/signup.html', form=form)
 
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if g.user:
+        flash("You are already logged in!", category="warning")
+        return redirect('/')
+    form = UserForm()
+
+    if form.validate_on_submit():
+        u = User.authenticate(username=form.username.data, password=form.password.data)
+        if not u:
+            flash("Invalid Credentials", category='warning')
+            return redirect('/login')
+        else:
+            do_login(u)
+            flash("Successfully Logged in", category="success")
+            return redirect('/')
+    return render_template('/users/login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    do_logout()
+    flash("Come Back Soon!", category='warning')
+    return redirect('/')
 
 
 
