@@ -46,42 +46,117 @@ class User(db.Model):
         else:
             return False
 
-class NewAccount(db.Model):
-    """Keeps track of new accounts 
-        in Remote Transfers"""
+class Account(db.Model):
+    """Keeps track of accounts 
+        involved in remote transfers"""
+
+    __tablename__ = 'accounts'
+
+    account_number = db.Column(db.Integer,
+                primary_key=True)
+    account_name = db.Column(db.Text,
+                nullable=False)
+    address = db.Column(db.Text,
+                nullable=False)
+    phone_number = db.Column(db.Text)
+
+    new_account = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
+
+class NewAccountQ(db.Model):
+    """Keeps track of new account
+        options in Remote Transfers"""
 
     __tablename__ = 'remote_transfers_new'
 
-    account_number = db.Column(db.Integer,
-                primary_key=True)
-    old_account_number = db.ForiegnKey('remote_transfers_old.account_number')
 
-    old_account = db.relationship('OldAccount',
-                backref='new_account')
+    id = db.Column(db.Integer,
+                primary_key=True,
+                autoincrement=True)
+    new_account_num = db.Column(db.Integer,
+                db.ForeignKey('accounts.account_number'))
+    
+    old_account_num = db.Column(db.Integer,
+                db.ForeignKey('accounts.account_number'))
 
-    account_name = db.Column(db.Text,
-                nullable=False)
-    address = db.Column(db.Text,
-                nullable=False)
-    phone_number = db.Column(db.Text)
+    equipment_present = db.Column(db.Boolean)
 
+    wants_equipment_moved = db.Column(db.Boolean)
+
+    knows_where_equipment = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+
+    eth_present = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    eth_to_poe = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    eth_in_port = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    poe_light = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    wants_managed_router = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
+    need_router_ship = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
+    wifi_ssid = db.Column(db.Text,
+                nullable=True)
+    wifi_pw = db.Column(db.Text,
+                nullable=True)
+    
     
 
-class OldAccount(db.Model):
-    """Keeps track of old accounts 
-        in remote transfers"""
+class OldAccountQ(db.Model):
+    """Keeps track of old account
+        options in Remote Transfers"""
 
     __tablename__ = 'remote_transfers_old'
-            
-    account_number = db.Column(db.Integer,
-                primary_key=True)
-    account_name = db.Column(db.Text,
-                nullable=False)
-    address = db.Column(db.Text,
-                nullable=False)
-    phone_number = db.Column(db.Text)
+
+    id = db.Column(db.Integer,
+                primary_key=True,
+                autoincrement=True)
+    new_account_num = db.Column(db.Integer,
+                db.ForeignKey('accounts.account_number'))
+    
+    old_account_num = db.Column(db.Integer,
+                db.ForeignKey('accounts.account_number'),
+                nullable=True)
 
     approve_transfer = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
+    equipment_present = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+
+    recent_service_issues = db.Column(db.Text,
+                nullable=True)
+
+    currently_connected = db.Column(db.Boolean)
+
+    knows_where_equipment = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    eth_present = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    eth_to_poe = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    eth_in_port = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    poe_light = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
+    has_managed_router = db.Column(db.Boolean,
                 nullable=False,
                 default=False)
     
