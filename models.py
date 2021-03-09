@@ -1,3 +1,4 @@
+from enum import unique
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
@@ -44,8 +45,47 @@ class User(db.Model):
             return u
         else:
             return False
-        
 
+class NewAccount(db.Model):
+    """Keeps track of new accounts 
+        in Remote Transfers"""
+
+    __tablename__ = 'remote_transfers_new'
+
+    account_number = db.Column(db.Integer,
+                primary_key=True)
+    old_account_number = db.ForiegnKey('remote_transfers_old.account_number')
+
+    old_account = db.relationship('OldAccount',
+                backref='new_account')
+
+    account_name = db.Column(db.Text,
+                nullable=False)
+    address = db.Column(db.Text,
+                nullable=False)
+    phone_number = db.Column(db.Text)
+
+    
+
+class OldAccount(db.Model):
+    """Keeps track of old accounts 
+        in remote transfers"""
+
+    __tablename__ = 'remote_transfers_old'
+            
+    account_number = db.Column(db.Integer,
+                primary_key=True)
+    account_name = db.Column(db.Text,
+                nullable=False)
+    address = db.Column(db.Text,
+                nullable=False)
+    phone_number = db.Column(db.Text)
+
+    approve_transfer = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
+    
+    
 
 
 
