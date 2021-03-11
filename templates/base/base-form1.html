@@ -11,18 +11,16 @@
                 {{ field.label(class_="form-label") }}
                 {{ field(class_="form-control") }}
             {% elif field.type == RadioField %}
-                {{field.label(class_="form-label")}}
-                <ul class="list-group">
+                {{field}}
+                <!-- {{field.label(class_="form-label")}}
                     {% for sub in field %}
-                    <li class="list-group-item">
-                        <div class="form-check">
+                    
                             {{ sub(class_="form-check-input") }}
                             {{ sub.label(class_="form-check-label") }}
-                        </div>  
-                    </li>
+                        
                     
-                    {% endfor %}
-                </ul>
+                    {% endfor %} -->
+                
                 
                   
                     

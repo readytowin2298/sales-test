@@ -106,7 +106,7 @@ def logout():
 def show_form():
     form = OldAccQuest()
     
-    return render_template('/forms/NewAcc.html', form=form)
+    return render_template('/forms/NewAcc1.html', form=form)
 
 @app.route('/play')
 def play():
