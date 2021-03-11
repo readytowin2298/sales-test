@@ -1,13 +1,46 @@
 <form method="POST" id="user_form">
     {{ form.hidden_tag() }}
+    <ul class="list-group" style="color: darkslategray;">
+      {% for field in form if field.widget.input_type != 'hidden' %}
+          <li class="list-group-item">
+            {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
 
-    {% for field in form if field.widget.input_type != 'hidden' %}
-      {% for error in field.errors %}
-        <span class="text-danger">{{ error }}</span>
-      {% endfor %}
-      {{ field(placeholder=field.label.text, class="form-control") }}
+            {% if field.type != RadioField and field.type != TextAreaField %}
+                {{ field.label(class_="form-label") }}
+                {{ field(class_="form-control") }}
+            {% elif field.type == RadioField %}
+                {{field.label(class_="form-label")}}
+                <ul class="list-group">
+                    {% for sub in field %}
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            {{ sub(class_="form-check-input") }}
+                            {{ sub.label(class_="form-check-label") }}
+                        </div>  
+                    </li>
+                    
+                    {% endfor %}
+                </ul>
+                
+                  
+                    
+                </div>
+            {% elif field.type == TextAreaField %}
+                <div class="form-floating">
+                  {{ field(class_="form-control", style="width: 300px;") }}
+                  {{ field.label(class_="form-label") }}
+                </div>
+            {% endif %}
+        
       <br>
-    {% endfor %}
+        </li>
+      {% endfor %}
+          
+          
+    </ul>
+    
 
     <button class="btn btn-primary btn-lg btn-block">Submit</button>
 </form>

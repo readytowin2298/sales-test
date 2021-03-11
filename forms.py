@@ -53,38 +53,46 @@ class NewAccQuest(FlaskForm):
             choices=[(1, 'Yes'), (0, 'No')], coerce=int,
             validators=[InputRequired()])
 
-    prev_cx_managed_router = BooleanField("Did the previous Tenant have a managed router?", 
-            choices=[(0, 'No'), (1, 'Yes')], coerce=int,
+    prev_cx_managed_router = RadioField("Did the previous Tenant have a managed router?", 
+            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
             validators=[InputRequired()])
 
 class OldAccQuest(FlaskForm):
 
-    old_account_num = IntegerField("*Old Account Number",
-                validators=[InputRequired()])
-    new_account_num = IntegerField("New Account Number (optional)")
+        old_account_num = IntegerField("*Old Account Number",
+                        validators=[InputRequired()])
+        new_account_num = IntegerField("New Account Number (optional)")
     
-    equipment_present = RadioField("The POE is Present", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
-    approve_transfer = RadioField("Does the account holder approve the transfer?", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
+        equipment_present = RadioField("The POE is Present", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
+        approve_transfer = RadioField("Does the account holder approve the transfer?", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
+        recent_service_issues = TextAreaField("Are there any recent service issues that you have been experiencing?(Leave blank if none)")
 
-    knows_where_equipment = RadioField("Are you familiar with the location where the service line enters your home?", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
+        currently_connected = RadioField("Are you able to connect to the internet currently?",
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
 
-    eth_present = RadioField("Do you see a cord coming from the wall or from a service jack on the wall?", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
+        knows_where_equipment = RadioField("Are you familiar with the location where the service line enters your home?", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
 
-    eth_in_port = RadioField("Is that cord currently connected to a small box, roughly the size of a bar of soap? ", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
+        eth_present = RadioField("Do you see a cord coming from the wall or from a service jack on the wall?", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
 
-    poe_light = RadioField("Is there a light on the small box?", 
-            choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-            validators=[InputRequired()])
+        eth_in_port = RadioField("Is that cord currently connected to a small box, roughly the size of a bar of soap? ", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
 
+        poe_light = RadioField("Is there a light on the small box?", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
+        has_managed_router = RadioField("Do they have a managed router?",
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
+                validators=[InputRequired()])
+                
 
     

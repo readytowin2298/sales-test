@@ -1,12 +1,15 @@
 import os
 from flask import Flask, render_template, request, flash, redirect, session, g
 from models import connect_db, db, User
-from forms import UserForm
+from forms import  UserForm, AccountForm, NewAccQuest, OldAccQuest
 
 CURR_USER_KEY = "curr_user"
 
 
 app = Flask(__name__)
+
+app.config['WTF_CSRF_ENABLED'] = False
+# Only un-comment while testing
 
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -97,6 +100,18 @@ def logout():
     do_logout()
     flash("Come Back Soon!", category='warning')
     return redirect('/')
+
+
+@app.route('/test-form')
+def show_form():
+    form = OldAccQuest()
+    
+    return render_template('/forms/NewAcc.html', form=form)
+
+@app.route('/play')
+def play():
+    
+    return render_template('play.html')
 
 
 
