@@ -102,16 +102,7 @@ def logout():
     return redirect('/')
 
 
-@app.route('/test-form')
-def show_form():
-    form = OldAccQuest()
-    
-    return render_template('/forms/NewAcc1.html', form=form)
 
-@app.route('/play')
-def play():
-    
-    return render_template('play.html')
 
 
 
