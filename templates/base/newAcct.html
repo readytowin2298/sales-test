@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container" style="color: darkslategray;">
+    <div class="container justify-content-center">
+        <div class="container">
+            <h3 class="display-3">New Accounts</h3>
+        </div>
+        <div class="container">
+            
+
+
+            <table class="table" style="height: 200px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Account #</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">New/Old</th>
+                        <th scope="col">To/From Account #</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for account in accounts %}
+                    <tr>
+                        <th scope="row">{{account.new_account_num}}</th>
+                        <td>{{account.name}}</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

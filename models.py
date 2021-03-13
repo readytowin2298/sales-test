@@ -46,23 +46,6 @@ class User(db.Model):
         else:
             return False
 
-class Account(db.Model):
-    """Keeps track of accounts 
-        involved in remote transfers"""
-
-    __tablename__ = 'accounts'
-
-    account_number = db.Column(db.Integer,
-                primary_key=True)
-    account_name = db.Column(db.Text,
-                nullable=False)
-    address = db.Column(db.Text,
-                nullable=False)
-    phone_number = db.Column(db.Text)
-
-    new_account = db.Column(db.Boolean,
-                nullable=False,
-                default=False)
 
 class NewAccountQ(db.Model):
     """Keeps track of new account
@@ -74,15 +57,17 @@ class NewAccountQ(db.Model):
     id = db.Column(db.Integer,
                 primary_key=True,
                 autoincrement=True)
-    new_account_num = db.Column(db.Integer,
-                db.ForeignKey('accounts.account_number'))
+    new_account_num = db.Column(db.Integer)
     
-    old_account_num = db.Column(db.Integer,
-                db.ForeignKey('accounts.account_number'))
+    old_account_num = db.Column(db.Integer)
 
-    equipment_present = db.Column(db.Boolean)
+    equipment_present = db.Column(db.Boolean,
+                nullable=False,
+                default=True)
 
-    wants_equipment_moved = db.Column(db.Boolean)
+    wants_equipment_moved = db.Column(db.Boolean,
+                nullable=False,
+                default=False)
 
     knows_where_equipment = db.Column(db.Boolean,
                 nullable=False,
@@ -110,6 +95,8 @@ class NewAccountQ(db.Model):
                 nullable=True)
     wifi_pw = db.Column(db.Text,
                 nullable=True)
+    created_by = db.Column(db.Text,
+              db.ForeignKey('users.username'))
     
     
 
@@ -122,12 +109,9 @@ class OldAccountQ(db.Model):
     id = db.Column(db.Integer,
                 primary_key=True,
                 autoincrement=True)
-    new_account_num = db.Column(db.Integer,
-                db.ForeignKey('accounts.account_number'))
+    new_account_num = db.Column(db.Integer)
     
-    old_account_num = db.Column(db.Integer,
-                db.ForeignKey('accounts.account_number'),
-                nullable=True)
+    old_account_num = db.Column(db.Integer)
 
     approve_transfer = db.Column(db.Boolean,
                 nullable=False,
@@ -159,6 +143,8 @@ class OldAccountQ(db.Model):
     has_managed_router = db.Column(db.Boolean,
                 nullable=False,
                 default=False)
+    created_by = db.Column(db.Text,
+              db.ForeignKey('users.username'))
     
     
 

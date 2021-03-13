@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, flash, redirect, session, g
 from models import connect_db, db, User
-from forms import  UserForm, AccountForm, NewAccQuest, OldAccQuest
+from forms import  UserForm, NewAccQuest, OldAccQuest
 
 CURR_USER_KEY = "curr_user"
 
