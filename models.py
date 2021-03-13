@@ -47,14 +47,17 @@ class User(db.Model):
             return False
 
 
-class NewAccountQ(db.Model):
+class NewAccount(db.Model):
     """Keeps track of new account
         options in Remote Transfers"""
 
     __tablename__ = 'remote_transfers_new'
 
+    name = db.Column(db.Text,
+                nullable=False)
+    phone_number = db.Column(db.Text,
+                nullable=False)
 
-    
     new_account_num = db.Column(db.Integer,
                 primary_key=True)
     
@@ -99,13 +102,16 @@ class NewAccountQ(db.Model):
     
     
 
-class OldAccountQ(db.Model):
+class OldAccount(db.Model):
     """Keeps track of old account
         options in Remote Transfers"""
 
     __tablename__ = 'remote_transfers_old'
 
-    
+    name = db.Column(db.Text,
+                nullable=False)
+    phone_number = db.Column(db.Text,
+                nullable=False)
     new_account_num = db.Column(db.Integer)
     
     old_account_num = db.Column(db.Integer,

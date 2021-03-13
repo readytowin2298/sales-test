@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, flash, redirect, session, g
-from models import connect_db, db, User
+from models import connect_db, db, User, NewAccount, OldAccount
 from forms import  UserForm, NewAccQuest, OldAccQuest
 
 CURR_USER_KEY = "curr_user"
@@ -102,8 +102,13 @@ def logout():
     return redirect('/')
 
 
-
-
+@app.route('/new-accounts')
+def show_new_accounts():
+    if not g.user:
+        flash("You must be logged in for that!", category="warning")
+        return redirect('/login')
+    accounts = NewAccount.query.all()
+    return render_template("/base/newAcct.html", accounts=accounts)
 
 
 

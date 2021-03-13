@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 
 {% block content %}
@@ -17,8 +17,9 @@
                     <tr>
                         <th scope="col">Account #</th>
                         <th scope="col">Name</th>
-                        <th scope="col">New/Old</th>
-                        <th scope="col">To/From Account #</th>
+                        <th scope="col">Needs Equipment Moved?</th>
+                        <th scope="col">Previous Account #</th>
+                        <th scope="col">Created By</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +27,9 @@
                     <tr>
                         <th scope="row">{{account.new_account_num}}</th>
                         <td>{{account.name}}</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>{{ account.wants_equipment_moved }}</td>
+                        <td>{{ account.old_account_num }}</td>
+                        <td>{{ account.created_by }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
