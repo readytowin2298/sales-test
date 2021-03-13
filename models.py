@@ -54,10 +54,9 @@ class NewAccountQ(db.Model):
     __tablename__ = 'remote_transfers_new'
 
 
-    id = db.Column(db.Integer,
-                primary_key=True,
-                autoincrement=True)
-    new_account_num = db.Column(db.Integer)
+    
+    new_account_num = db.Column(db.Integer,
+                primary_key=True)
     
     old_account_num = db.Column(db.Integer)
 
@@ -106,12 +105,11 @@ class OldAccountQ(db.Model):
 
     __tablename__ = 'remote_transfers_old'
 
-    id = db.Column(db.Integer,
-                primary_key=True,
-                autoincrement=True)
+    
     new_account_num = db.Column(db.Integer)
     
-    old_account_num = db.Column(db.Integer)
+    old_account_num = db.Column(db.Integer,
+                primary_key=True)
 
     approve_transfer = db.Column(db.Boolean,
                 nullable=False,
