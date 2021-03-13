@@ -111,12 +111,46 @@ def show_new_accounts():
     return render_template("/base/newAcct.html", accounts=accounts)
 
 
+@app.route('/old-accounts')
+def show_old_accounts():
+    if not g.user:
+        flash("You must be logged in for that!", category="warning")
+        return redirect('/login')
+    accounts = OldAccount.query.all()
+    return render_template("/base/oldAcct.html", accounts=accounts)
+
+
+@app.route('/accounts/old/<int:account_num>')
+def old_account_view(account_num):
+    if not g.user:
+        flash("You must be logged in for that!", category='warning')
+        return redirect('/login')
+    old_account = OldAccount.query.filter_by(old_account_num=account_num).first()
+    if not old_account:
+        flash("Sorry, we can't locate that account", category='danger')
+        return redirect('/new-accounts')
+    if old_account.new_account_num:
+        new_account = NewAccount.query.filter_by(new_account_num=old_account.new_account_num).first()
+    else:
+        new_account = None
+    return render_template('/')
+@app.route('/accounts/new/<int:account_num')
+def new_account_view(account_num):
+    if not g.user:
+        flash("You must be logged in for that!", category='warning')
+        return redirect('/login')
+    new_account = NewAccount.query.filter_by(old_account_num=account_num).first()
+    if not new_account:
+        flash("Sorry, we can't locate that account", category='danger')
+        return redirect('/old-accounts')
+    if new_account.old_account_num:
+        old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first()
+    else:
+        old_account = None
 
 
 
-
-
-
+    
 
 
 
