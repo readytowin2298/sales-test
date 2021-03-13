@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+<div class="container" style="color: darkslategray;">
+    <div class="container justify-content-center">
+        <div class="container">
+            <h3 class="display-3">Old Accounts</h3>
+        </div>
+        <div class="container-fluid">
+            
+            <div class="container">
+                <a href="/old-accounts/add" class="btn btn-info">Add An Old Account</a>
+            </div>
+            <br><br>
+            <div class="container justify-content-right">
+                <form class="form-inline" action="">
+                    <span class="inline">
+                        <input type="text" placeholder="Account Number" class="form-control">
+                        <button class="btn btn-primary">Find Account</button>
+                    </span>
+                </form>
+            </div>
+
+            <table class="table table-striped" style="height: 200px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Account #</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Needs Equipment Moved?</th>
+                        <th scope="col">Previous Account #</th>
+                        <th scope="col">Created By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for account in accounts %}
+                    <tr id="{{account.old_account_num}}">
+                        <th scope="row"><a href="/accounts/{{ account.old_acccount_num }}">{{account.new_account_num}}</a></th>
+                        <td>{{account.name}}</td>
+                        <td>{{ account.wants_equipment_moved }}</td>
+                        <td>{{ account.old_account_num }}</td>
+                        <td>{{ account.created_by }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+</div>
+<script src="/static/js/accountSearch.js" ></script>
+{% endblock %}
