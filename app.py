@@ -154,6 +154,39 @@ def new_account_view(account_num):
     return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
 
 
+@app.route('/old-accounts/add', methods=["GET", "POST"])
+def add_old_account():
+    if not g.user:
+        flash("You aren't logged in!", category='warning')
+        return redirect('/login')
+    form = OldAccQuest()
+    if form.validate_on_submit():
+        acc = OldAccount(
+            name=form.account_name.data,
+            phone_number=form.phone_number.data,
+            new_account_num=form.account_number.data,
+            old_account_num=form.account_number.data,
+            approve_transfer=bool(form.approve_transfer.data),
+            equipment_present=bool(form.equipment_present.data),
+            recent_service_issues=form.recent_service_issues.data,
+            currently_connected=bool(form.currently_connected.data),
+            knows_where_equipment=bool(form.knows_where_equipment.data),
+            eth_present=bool(form.eth_present.data),
+            eth_to_poe=bool(form.eth_to_poe.data),
+            eth_in_port=bool(form.eth_in_port.data),
+            poe_light=bool(form.poe_light.data),
+            has_managed_router=bool(form.has_managed_router.data),
+            created_by=g.user.username
+
+        )
+        db.session.add(acc)
+        db.session.commit()
+
+        flash("Success", category='success')
+        return redirect('/old-accounts')
+    return render_template('/forms/OldAccForm.html', form=form)
+
+
 
     
 
