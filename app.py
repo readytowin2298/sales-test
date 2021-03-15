@@ -13,8 +13,10 @@ app.config['WTF_CSRF_ENABLED'] = False
 
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgres://rfdqftki:a0Y8qhkuFT-um6ZWMYd78Vq5cde9t_Kh@ziggy.db.elephantsql.com:5432/rfdqftki'))
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+#     os.environ.get('DATABASE_URL', 'postgres://rfdqftki:a0Y8qhkuFT-um6ZWMYd78Vq5cde9t_Kh@ziggy.db.elephantsql.com:5432/rfdqftki'))
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///sales_test'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -130,11 +132,12 @@ def old_account_view(account_num):
         flash("Sorry, we can't locate that account", category='danger')
         return redirect('/new-accounts')
     if old_account.new_account_num:
-        new_account = NewAccount.query.filter_by(new_account_num=old_account.new_account_num).first()
+        new_account = NewAccount.query.filter_by(new_account_num=old_account.new_account_num).first().fill_form()
     else:
         new_account = None
-    return render_template('/')
-@app.route('/accounts/new/<int:account_num')
+    old_account = old_account.fill_form()
+    return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
+@app.route('/accounts/new/<int:account_num>')
 def new_account_view(account_num):
     if not g.user:
         flash("You must be logged in for that!", category='warning')
@@ -144,9 +147,11 @@ def new_account_view(account_num):
         flash("Sorry, we can't locate that account", category='danger')
         return redirect('/old-accounts')
     if new_account.old_account_num:
-        old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first()
+        old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first().fill_form()
     else:
         old_account = None
+    new_account = new_account.fill_form()
+    return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
 
 
 

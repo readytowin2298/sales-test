@@ -1,6 +1,7 @@
 from enum import unique
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from forms import NewAccQuest, OldAccQuest
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -100,6 +101,22 @@ class NewAccount(db.Model):
     created_by = db.Column(db.Text,
               db.ForeignKey('users.username'))
     
+    def fill_form(self):
+        form = NewAccQuest()
+        form.account_number.data = self.new_account_num
+        form.account_name.data = self.name
+        form.phone_number.data = self.phone_number
+        form.equipment_present.data = int(self.equipment_present)
+        form.wants_equipment_moved.data = int(self.wants_equipment_moved)
+        form.knows_where_equipment.data = int(self.knows_where_equipment)
+        form.eth_present.data = int(self.knows_where_equipment)
+        form.eth_in_port.data = int(self.eth_in_port)
+        form.poe_light.data = int(self.poe_light)
+        form.cx_wants_router.data = int(self.wants_managed_router)
+
+        return form
+
+    
     
 
 class OldAccount(db.Model):
@@ -150,6 +167,22 @@ class OldAccount(db.Model):
     created_by = db.Column(db.Text,
               db.ForeignKey('users.username'))
     
+    def fill_form(self):
+        form = OldAccQuest()
+        form.account_number.data = self.old_account_num
+        form.account_name.data = self.name
+        form.phone_number.data = self.phone_number
+        form.equipment_present = int(self.equipment_present)
+        form.approve_transfer.data = int(self.approve_transfer)
+        form.recent_service_issues.data = self.recent_service_issues
+        form.currently_connected.data = int(self.currently_connected)
+        form.knows_where_equipment.data = int(self.knows_where_equipment)
+        form.eth_present.data = int(self.eth_present)
+        form.eth_in_port.data = int(self.eth_in_port)
+        form.poe_light.data = int(self.poe_light)
+        form.has_managed_router.data = int(self.has_managed_router)
+
+        return form
     
 
 

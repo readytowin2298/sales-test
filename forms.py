@@ -20,9 +20,6 @@ class NewAccQuest(FlaskForm):
         account_name = StringField("*Account Name",
                 validators=[InputRequired()])
 
-        address = StringField("*Service Address",
-                validators=[InputRequired()])
-
         phone_number = StringField("Best Callback",
                 validators=[InputRequired()])
 
@@ -64,9 +61,6 @@ class OldAccQuest(FlaskForm):
                 validators=[InputRequired()])
 
         account_name = StringField("*Account Name",
-                validators=[InputRequired()])
-
-        address = StringField("*Service Address",
                 validators=[InputRequired()])
                         
         phone_number = StringField("Best Callback",
