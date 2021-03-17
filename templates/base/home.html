@@ -3,27 +3,68 @@
 {% block content %}
 <div class="container">
     <div class="container justify-content-center">
-        <h3 class="display-3">Remote Transfer Tool</h3>
+        <h2 class="display-2">Remote Transfer Tool</h2>
     </div>
+    <hr>
     <div class="container">
-        <table class="table" style="height: 200px;">
-            <thead>
-              <tr>
-                <th scope="col">Account #</th>
-                <th scope="col">Name</th>
-                <th scope="col">New/Old</th>
-                <th scope="col">To/From Account #</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="row">
+            <div class="col col-6">
+                <div class="container justify-content-center">
+                    <h4 class="display-4">
+                      Old Accounts
+                    </h4>
+                </div>
+                <table class="table" style="height: 200px;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Account #</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">New Account #</th>
+                            <th scope="col">Created By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for account in old_accounts %}
+                        <tr>
+                          <th scope="row"><a href="/accounts/old/{{account.old_account_num}}">{{account.old_account_num}}</a></th>
+                          <td>{{account.name}}</td>
+                          <td><a href="/accounts/new/{{account.new_account_num}}">{{account.new_account_num}}</a></td>
+                          <td>{{ account.created_by }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col col-6">
+              <div class="container justify-content-center">
+                  <h4 class="display-4">
+                    New Accounts
+                  </h4>
+              </div>
+              <table class="table" style="height: 200px;">
+                  <thead>
+                      <tr>
+                          <th scope="col">Account #</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Old Account #</th>
+                          <th scope="col">Created By</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for account in old_accounts %}
+                      <tr>
+                        <th scope="row"><a href="/accounts/new/{{account.new_account_num}}">{{account.new_account_num}}</a></th>
+                        <td>{{account.name}}</td>
+                        <td><a href="/accounts/old/{{account.new_account_num}}">{{account.new_account_num}}</a></td>
+                        <td>{{ account.created_by }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+
+        </div>
+        
 
     </div>
 </div>

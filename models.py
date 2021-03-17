@@ -30,6 +30,7 @@ class User(db.Model):
                 nullable=False,
                 default=False)
     
+    
     @classmethod
     def create(cls, username, password):
         hashed = bcrypt.generate_password_hash(password)
@@ -106,13 +107,14 @@ class NewAccount(db.Model):
         form.account_number.data = self.new_account_num
         form.account_name.data = self.name
         form.phone_number.data = self.phone_number
-        form.equipment_present.data = int(self.equipment_present)
+        form.equipment_present.data = int(self.eth_present)
         form.wants_equipment_moved.data = int(self.wants_equipment_moved)
         form.knows_where_equipment.data = int(self.knows_where_equipment)
         form.eth_present.data = int(self.knows_where_equipment)
         form.eth_in_port.data = int(self.eth_in_port)
         form.poe_light.data = int(self.poe_light)
         form.cx_wants_router.data = int(self.wants_managed_router)
+        form.old_account_num.data = int(self.old_account_num)
 
         return form
 
@@ -172,7 +174,7 @@ class OldAccount(db.Model):
         form.account_number.data = self.old_account_num
         form.account_name.data = self.name
         form.phone_number.data = self.phone_number
-        form.equipment_present = int(self.equipment_present)
+        form.equipment_present = int(self.eth_present)
         form.approve_transfer.data = int(self.approve_transfer)
         form.recent_service_issues.data = self.recent_service_issues
         form.currently_connected.data = int(self.currently_connected)
@@ -181,6 +183,7 @@ class OldAccount(db.Model):
         form.eth_in_port.data = int(self.eth_in_port)
         form.poe_light.data = int(self.poe_light)
         form.has_managed_router.data = int(self.has_managed_router)
+        form.new_account_num.data = int(self.new_account_num)
 
         return form
     

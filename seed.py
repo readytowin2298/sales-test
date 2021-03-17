@@ -1,6 +1,8 @@
 from app import app, db, User, NewAccQuest, OldAccQuest, NewAccount, OldAccount
 from random import randint, choice
 
+db.drop_all()
+db.create_all()
 
 usernames = ['dames', 'msalazar', 'eacevado', 'tstevens', 'gnugent', 'ogobin', 'tnewby']
 
@@ -67,6 +69,8 @@ db.session.commit()
 range(12500000, 12600000)
 
 n = range(0, 24)
+old_account_nums = []
+new_account_nums = []
 for x in n:
     j = NewAccount(
     name=choice(names),
@@ -84,6 +88,8 @@ for x in n:
     need_router_ship = bool(randint(0,1)),
     created_by = choice(usernames)
     )
+    old_account_nums.append(j.old_account_num)
+    new_account_nums.append(j.new_account_num)
     db.session.add(j)
     print(f"Added New Account for {j.name}")
 
@@ -92,11 +98,12 @@ db.session.commit()
 
 
 for x in n:
+    new_account_num = choice(new_account_nums)
     j = OldAccount(
     name=choice(names),
     phone_number = '867-5309',
-    new_account_num = randint(12500000, 12600000),
-    old_account_num = randint(12500000, 12600000),
+    new_account_num = new_account_num,
+    old_account_num = NewAccount.query.get(new_account_num).old_account_num,
     approve_transfer = True,
     equipment_present = bool(randint(0,1)),
     currently_connected = bool(randint(0,1)),
@@ -108,6 +115,7 @@ for x in n:
     has_managed_router = bool(randint(0,1)),
     created_by = choice(usernames)
     )
+    new_account_nums.remove(new_account_num)
     db.session.add(j)
     print(f"Added Old Account for {j.name}")
 

@@ -36,7 +36,7 @@
                 <tbody>
                 {% for account in accounts %}
                     <tr id="{{account.new_account_num}}">
-                        <th scope="row"><a href="/accounts/{{ account.new_acccount_num }}">{{account.new_account_num}}</a></th>
+                        <th scope="row"><a href="/accounts/new/{{ account.new_account_num }}">{{account.new_account_num}}</a></th>
                         <td>{{account.name}}</td>
                         <td>{{ account.wants_equipment_moved }}</td>
                         <td>{{ account.old_account_num }}</td>

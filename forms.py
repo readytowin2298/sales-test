@@ -23,7 +23,7 @@ class NewAccQuest(FlaskForm):
         phone_number = StringField("Best Callback",
                 validators=[InputRequired()])
         
-        old_account_number = IntegerField("Old Account Number")
+        old_account_num = IntegerField("Old Account Number")
 
         equipment_present = RadioField("*Is the POE Present?", 
                 choices=[(1, 'Yes'), (0, 'No')], coerce=int,
@@ -64,6 +64,7 @@ class OldAccQuest(FlaskForm):
 
         account_name = StringField("*Account Name",
                 validators=[InputRequired()])
+        new_account_num = IntegerField("New Account Number, if available")
                         
         phone_number = StringField("Best Callback",
                 validators=[InputRequired()])

@@ -1,0 +1,1 @@
+$("form :input").prop("disabled", true)

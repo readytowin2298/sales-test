@@ -16,7 +16,7 @@ app.config['WTF_CSRF_ENABLED'] = False
 # app.config['SQLALCHEMY_DATABASE_URI'] = (
 #     os.environ.get('DATABASE_URL', 'postgres://rfdqftki:a0Y8qhkuFT-um6ZWMYd78Vq5cde9t_Kh@ziggy.db.elephantsql.com:5432/rfdqftki'))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///sales_test'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://rfdqftki:a0Y8qhkuFT-um6ZWMYd78Vq5cde9t_Kh@ziggy.db.elephantsql.com:5432/rfdqftki'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -51,8 +51,9 @@ def add_user_to_g():
 def home():
     if not g.user:
         return redirect('/login')
-
-    return render_template('/base/home.html')
+    old_accounts = OldAccount.query.filter_by(created_by=g.user.username).all()
+    new_accounts = NewAccount.query.filter_by(created_by=g.user.username).all()
+    return render_template('/base/home.html', old_accounts=old_accounts, new_accounts=new_accounts)
 
 
 @app.route('/signup', methods=['GET','POST'])
@@ -132,8 +133,11 @@ def old_account_view(account_num):
         flash("Sorry, we can't locate that account", category='danger')
         return redirect('/new-accounts')
     if old_account.new_account_num:
-        new_account = NewAccount.query.filter_by(new_account_num=old_account.new_account_num).first().fill_form()
-    else:
+        new_account = NewAccount.query.filter_by(new_account_num=old_account.new_account_num).first()
+        if new_account:
+            new_account = new_account.fill_form()
+         
+    if not new_account:
         new_account = None
     old_account = old_account.fill_form()
     return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
@@ -142,13 +146,15 @@ def new_account_view(account_num):
     if not g.user:
         flash("You must be logged in for that!", category='warning')
         return redirect('/login')
-    new_account = NewAccount.query.filter_by(old_account_num=account_num).first()
+    new_account = NewAccount.query.filter_by(new_account_num=account_num).first()
     if not new_account:
         flash("Sorry, we can't locate that account", category='danger')
         return redirect('/old-accounts')
     if new_account.old_account_num:
-        old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first().fill_form()
-    else:
+        old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first()
+        if old_account:
+            old_account = old_account.fill_form()
+    if not old_account:
         old_account = None
     new_account = new_account.fill_form()
     return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
@@ -185,6 +191,16 @@ def add_old_account():
         flash("Success", category='success')
         return redirect('/old-accounts')
     return render_template('/forms/OldAccForm.html', form=form)
+
+@app.route('/new-accounts/add', methods=['GET','POST'])
+def add_new_account():
+    if not g.user:
+        flash("You aren't logged in!", category='warning')
+        return redirect('/login')
+    form = OldAccQuest()
+    if form.validate_on_submit():
+        print('hi')
+    return render_template('/forms/NewAccForm.html', form=form)
 
 
 

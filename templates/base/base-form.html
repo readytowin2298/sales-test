@@ -1,43 +1,46 @@
-<form method="POST" id="user_form">
-  {{ form.hidden_tag() }}
-  <ul class="list-group" style="color: darkslategray;">
-    {% for field in form if field.widget.input_type != 'hidden' %}
-        <li class="list-group-item">
-          {% for error in field.errors %}
-              <span class="text-danger">{{ error }}</span>
-          {% endfor %}
 
-          {% if field.type != 'RadioField' and field.type != 'TextAreaField' %}
-              {{ field.label(class_="form-label") }}
-              {{ field(class_="form-control") }}
-          {% elif field.type == 'RadioField' %}
-          <div class="form-check">
-              {{field.label(class_="form-label")}}
-              <br>
-                  {% for sub in field %}
-                  
-                          {{ sub(class_="form-check-input") }}
-                          {{ sub.label(class_="form-check-label") }}
-                          <br>
-                  
-                  {% endfor %}
-          </div>
-              
-        
-          {% elif field.type == 'TextAreaField' %}
-              <div class=" container-fluid form-floating">
-                  {{ field.label(class_="form-label") }} <br>
-                  {{ field(class_="form-control") }}
-              </div>
-          {% endif %}
-      
-    <br>
-      </li>
-    {% endfor %}
-        
-        
-  </ul>
-  
+{% if form %}
+  <form method="POST" id="user_form">
+    {{ form.hidden_tag() }}
+    <ul class="list-group" style="color: darkslategray;">
+      {% for field in form if field.widget.input_type != 'hidden' %}
+          <li class="list-group-item">
+            {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
 
-  <button class="btn btn-primary btn-lg btn-block">Submit</button>
-</form>
+            {% if field.type != 'RadioField' and field.type != 'TextAreaField' %}
+                {{ field.label(class_="form-label") }}
+                {{ field(class_="form-control") }}
+            {% elif field.type == 'RadioField' %}
+            <div class="form-check">
+                {{field.label(class_="form-label")}}
+                <br>
+                    {% for sub in field %}
+                    
+                            {{ sub(class_="form-check-input") }}
+                            {{ sub.label(class_="form-check-label") }}
+                            <br>
+                    
+                    {% endfor %}
+            </div>
+                
+          
+            {% elif field.type == 'TextAreaField' %}
+                <div class=" container-fluid form-floating">
+                    {{ field.label(class_="form-label") }} <br>
+                    {{ field(class_="form-control") }}
+                </div>
+            {% endif %}
+        
+      <br>
+        </li>
+      {% endfor %}
+          
+          
+    </ul>
+    
+
+    <button class="btn btn-primary btn-lg btn-block">Submit</button>
+  </form>
+{% endif %}
