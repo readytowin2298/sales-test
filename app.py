@@ -182,11 +182,14 @@ def add_old_account():
             created_by=g.user.username
 
         )
-        db.session.add(acc)
-        db.session.commit()
-
-        flash("Success", category='success')
-        return redirect('/old-accounts')
+        try:
+            db.session.add(acc)
+            db.session.commit()
+            flash("Success", category='success')
+            return redirect('/old-accounts')
+        except:
+            flash("Sorry, error connecting to database", category="danger")
+            return redirect("/")
     return render_template('/forms/OldAccForm.html', form=form)
 
 @app.route('/new-accounts/add', methods=['GET','POST'])
@@ -219,16 +222,51 @@ def add_new_account():
             db.sesssion.add(acc)
             db.session.commit()
             flash("Account info added correctly!", category='success')
-            if acc.old_account_num and not OldAccount.query.filter_by(old_account_num=acc.old_account_num).first():
-                flash(f"Please input information for account {acc.old_account_num}", category='warning')
-                return redirect('/old-accounts/add')
-            return redirect(f'/accounts/new/{acc.new_account_number}')
+        except:
+            flash("Sorry, error connecting to database", category="danger")
+            return redirect("/")
+        if acc.old_account_num and not OldAccount.query.filter_by(old_account_num=acc.old_account_num).first():
+            flash(f"Please input information for account {acc.old_account_num}", category='warning')
+            return redirect('/old-accounts/add')
+        return redirect(f'/accounts/new/{acc.new_account_number}')
     return render_template('/forms/NewAccForm.html', form=form)
 
-
-
-    
-
+@app.route('/accounts/new/<int:account_num>/edit', methods=["GET", "POST"])
+def edit_new(accout_num):
+    if not g.user:
+        flash("You aren't logged in!", category='warning')
+        return redirect('/login')
+    account = NewAccount.query.filter_by(new_account_num=account_num).first()
+    if not account:
+        flash("Sorry, we can't locate that accout.", category="danger")
+        return redirect("/")
+    form = account.fill_form()
+    if form.validate_on_submit():
+        account.name = form.account_name.data
+        account.phone_number = form.phone_number.data
+        account.new_account_num = form.new_account_num.data
+        account.old_account_num = form.old_account_num.data
+        account.equipment_present = bool(form.equipment_present.data)
+        account.wants_equipment_moved = bool(form.wants_equipment_moved.data)
+        account.knows_where_equipment = bool(form.knows_where_equipment.data)
+        account.eth_present = bool(form.eth_present.data)
+        account.eth_to_poe = bool(form.eth_to_poe.data)
+        account.eth_in_port = bool(form.eth_in_port.data)
+        account.poe_light = bool(form.poe_light.data)
+        account.transfer_when = form.transfer_when.data
+        account.wants_managed_router = bool(form.wants_managed_router.data)
+        account.need_router_ship = bool(form.need_router_ship.data)
+        account.wifi_ssid = form.wifi_ssid.data
+        account.wifi_pw = form.wifi_pw.data
+        try:
+            db.session.add(account)
+            db.session.commit()
+            flash("Success!", category='success')
+            return redirect(f"/accounts/new/{account.new_account_num}")
+        except:
+            flash("Sorry, error connecting to database", category="danger")
+            return redirect("/")
+        
 
 
 
