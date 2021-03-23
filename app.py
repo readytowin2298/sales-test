@@ -152,11 +152,8 @@ def new_account_view(account_num):
         return redirect('/old-accounts')
     if new_account.old_account_num:
         old_account = OldAccount.query.filter_by(old_account_num=new_account.old_account_num).first()
-        if old_account:
-            old_account = old_account.fill_form()
     if not old_account:
         old_account = None
-    new_account = new_account.fill_form()
     return render_template('/forms/accountCompare.html', new_account=new_account, old_account=old_account)
 
 
@@ -197,9 +194,35 @@ def add_new_account():
     if not g.user:
         flash("You aren't logged in!", category='warning')
         return redirect('/login')
-    form = OldAccQuest()
+    form = NewAccQuest()
     if form.validate_on_submit():
-        print('hi')
+        acc = NewAccount(
+            name=form.account_name.data,
+            phone_number=form.phone_number.data,
+            new_account_num=form.account_number.data,
+            old_account_num=form.account_number.data,
+            equipment_present=bool(form.equipment_present.data),
+            wants_equipment_moved=bool(form.wants_equipment_moved.data),
+            knows_where_equipment=bool(form.knows_where_equipment.data),
+            eth_present=bool(form.eth_present.data),
+            eth_to_poe=bool(form.eth_to_poe.data),
+            eth_in_port=bool(form.eth_in_port.data),
+            poe_light=bool(form.poe_light.data),
+            transfer_when=form.transfer_when.data,
+            wants_managed_router=bool(form.wants_managed_router.data),
+            need_router_ship=bool(form.need_router_ship.data),
+            wifi_ssid=form.wifi_ssid.data,
+            wifi_pw=form.wifi_pw.data,
+            created_by=g.user.username
+        )
+        try:
+            db.sesssion.add(acc)
+            db.session.commit()
+            flash("Account info added correctly!", category='success')
+            if acc.old_account_num and not OldAccount.query.filter_by(old_account_num=acc.old_account_num).first():
+                flash(f"Please input information for account {acc.old_account_num}", category='warning')
+                return redirect('/old-accounts/add')
+            return redirect(f'/accounts/new/{acc.new_account_number}')
     return render_template('/forms/NewAccForm.html', form=form)
 
 

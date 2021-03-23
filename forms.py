@@ -48,14 +48,17 @@ class NewAccQuest(FlaskForm):
         poe_light = RadioField("*Is there a light on the small box?", 
                 choices=[(1, 'Yes'), (0, 'No')], coerce=int,
                 validators=[InputRequired()])
+        transfer_when = StringField("*When would the customer like for us to complete the transfer? Please take into account when they will be physically in the house tob verify connection",
+                validators=[InputRequired(message="Please put n/a if not known")])
 
-        prev_cx_managed_router = RadioField("*Did the previous Tenant have a managed router?", 
-                choices=[(1, 'Yes'), (0, 'No')], coerce=int,
-                validators=[InputRequired()])
         cx_wants_router = RadioField("*Does this customer want a Nextlink Managed Router?",
                 choices=[(1, 'Yes'), (0, 'No')], coerce=int,
                 validators=[InputRequired()])
+        need_router_ship = RadioField("*Do we need to ship a router? Please review old account and see if a managed router is there already", 
+                choices=[(1, 'Yes'), (0, 'No')], coerce=int)
+        wifi_ssid = StringField("*What would they like their Wi-Fi network to be called?")
 
+        wifi_pw = StringField("*What would they like their Wi-Fi password to be?")
 
 class OldAccQuest(FlaskForm):
 

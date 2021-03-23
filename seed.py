@@ -4,7 +4,7 @@ from random import randint, choice
 db.drop_all()
 db.create_all()
 
-usernames = ['dames', 'msalazar', 'eacevado', 'tstevens', 'gnugent', 'ogobin', 'tnewby']
+usernames = ['dames', 'msalazar', 'eacevado', 'tstevens', 'gnugent', 'ogobin', 'tnewby', 'shollenback']
 
 names = ["Eliza Ojeda",
 "Vickey Scheck",

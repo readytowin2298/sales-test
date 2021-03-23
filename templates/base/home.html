@@ -51,7 +51,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                    {% for account in old_accounts %}
+                    {% for account in new_accounts %}
                       <tr>
                         <th scope="row"><a href="/accounts/new/{{account.new_account_num}}">{{account.new_account_num}}</a></th>
                         <td>{{account.name}}</td>

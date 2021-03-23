@@ -12,10 +12,34 @@
         </div>
         <hr>
         <div class="row justify-content-center">
+            <div class="container col col-6">
+                <div class="container justify-content-center">
+                    <h4 class="display-4">Billmax Note</h4>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" class="form-control" disabled>
+                    
+                        Old Account Name: {{old_account.name}}
+                        Old Accoutn Number: {{old_account.old_account_num}} 
+                        
+                        New Account Name: {{ new_account.name }} 
+                        Old Account Number: {{ new_account.new_account_num }} 
+                        
+                        Old Account Approves: {{ old_account.approve_transfer }} 
+                        New Account Wants Equipment Moved: {{ new_account.wants_equipment_moved }} 
+                        New Account Wants Managed Router: {{ new_account.wants_managed_router }}
+                        {% if new_account.wants_managed_router %}
+                        New Account Needs Router Shipped: {{new_account.need_router_shipped}}
+                        {% endif %}
+
+                        Requested date for transfer: {{ new_account.transfer_when }}
+                </textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="col col-6">
                 <div class="container">
                     <h3 class="display-3">Old Account:</h3>
-                    {% with form=old_account %}
+                    {% with form=old_account.fill_form() %}
                         {% include '/base/base-form.html' %}
                     {% endwith %}
                 </div>
@@ -24,7 +48,7 @@
             <div class="col col-6">
                 <div class="container">
                     <h3 class="display-3">New Account:</h3>
-                    {% with form=new_account %}
+                    {% with form=new_account.fill_form() %}
                         {% include '/base/base-form.html' %}
                     {% endwith %}
                 </div>

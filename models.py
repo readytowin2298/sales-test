@@ -89,6 +89,9 @@ class NewAccount(db.Model):
     poe_light = db.Column(db.Boolean,
                 nullable=False,
                 default=True)
+    transfer_when = db.Column(db.Text,
+                nullable=False,
+                default="n/a")
     wants_managed_router = db.Column(db.Boolean,
                 nullable=False,
                 default=False)
@@ -107,7 +110,7 @@ class NewAccount(db.Model):
         form.account_number.data = self.new_account_num
         form.account_name.data = self.name
         form.phone_number.data = self.phone_number
-        form.equipment_present.data = int(self.eth_present)
+        form.equipment_present.data = int(self.equipment_present)
         form.wants_equipment_moved.data = int(self.wants_equipment_moved)
         form.knows_where_equipment.data = int(self.knows_where_equipment)
         form.eth_present.data = int(self.knows_where_equipment)
@@ -115,6 +118,10 @@ class NewAccount(db.Model):
         form.poe_light.data = int(self.poe_light)
         form.cx_wants_router.data = int(self.wants_managed_router)
         form.old_account_num.data = int(self.old_account_num)
+        form.wifi_ssid.data = self.wifi_ssid
+        form.wifi_pw.data = self.wifi_pw
+        form.need_router_ship.data = int(self.need_router_ship)
+        form.transfer_when.data = self.transfer_when
 
         return form
 
@@ -174,7 +181,7 @@ class OldAccount(db.Model):
         form.account_number.data = self.old_account_num
         form.account_name.data = self.name
         form.phone_number.data = self.phone_number
-        form.equipment_present = int(self.eth_present)
+        form.equipment_present = int(self.equipment_present)
         form.approve_transfer.data = int(self.approve_transfer)
         form.recent_service_issues.data = self.recent_service_issues
         form.currently_connected.data = int(self.currently_connected)
